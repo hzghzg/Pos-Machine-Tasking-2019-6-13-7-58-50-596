@@ -1,8 +1,7 @@
-
-function removeRredundantElements (barcodes) {
-    var newBarcodesArray=[];
+const removeRredundantElements=(barcodes)=>{
+    let newBarcodesArray=[];
     for(let i=0;i<barcodes.length;i++){
-        var count=1;
+        let count=1;
         if(barcodes[i]!='0'){
             for(let j=i+1;j<barcodes.length;j++){
                 if(barcodes[j]==barcodes[i]){
@@ -10,7 +9,7 @@ function removeRredundantElements (barcodes) {
                     count++;
                 }
             }
-            var obj={};
+            let obj={};
             obj.barcodeID=barcodes[i];
             obj.total=count;
             newBarcodesArray.push(obj);
@@ -18,9 +17,11 @@ function removeRredundantElements (barcodes) {
     }
     return newBarcodesArray;
 }
-function isBarcodeValid (newBarcodesArray,dataBase) {
-    var lengthOfNewBarcodesArray=newBarcodesArray.length;
-    var count=0;
+
+
+const isBarcodeValid=(newBarcodesArray,dataBase)=>{
+    let lengthOfNewBarcodesArray=newBarcodesArray.length;
+    let count=0;
     for(let i=0;i<newBarcodesArray.length;i++){//找database里有没有
         for(let j=0;j<dataBase.length;j++){
             if(newBarcodesArray[i].barcodeID==dataBase[j].id){
@@ -34,10 +35,11 @@ function isBarcodeValid (newBarcodesArray,dataBase) {
     else
     return false;
 }
-function printReceipt (barcodes,dataBase,removeRredundantElements,isBarcodeValid) {
-    var  receipt='';
-    var totalPrice=0;
-    var newBarcodesArray=removeRredundantElements (barcodes);
+
+const printReceipt=(barcodes,dataBase,removeRredundantElements,isBarcodeValid)=>{
+    let  receipt='';
+    let totalPrice=0;
+    let newBarcodesArray=removeRredundantElements (barcodes);
     if(!isBarcodeValid (newBarcodesArray,dataBase))
     receipt= receipt+"[ERROR]!";
     else{
@@ -46,23 +48,16 @@ function printReceipt (barcodes,dataBase,removeRredundantElements,isBarcodeValid
             for(let j=0;j<dataBase.length;j++){
                 if(newBarcodesArray[i].barcodeID==dataBase[j].id){
                     totalPrice=totalPrice+dataBase[j].price*newBarcodesArray[i].total;
-                    receipt= receipt+dataBase[j].name+"\t\t\t\t\t\t"+dataBase[j].price+"\t\t\t"+newBarcodesArray[i].total+"\n";
+                    receipt=`${receipt}${dataBase[j].name}\t\t\t\t\t\t${dataBase[j].price}\t\t\t${newBarcodesArray[i].total}\n`;
                     break;
                 }
             }
         }
-        receipt= receipt+"------------------------------------------------------------\nPrice: "+totalPrice;
-        /*for(let i=0;i<newBarcodesArray.length;i++){//找database里有没有
-            for(let j=0;j<dataBase.length;j++){
-                if(newBarcodesArray[i].barcodeID==dataBase[j].id){
-                    receipt= receipt+"hello!";
-                    break;
-                }
-            }
-        }*/
+        receipt= `${receipt}------------------------------------------------------------\nPrice: ${totalPrice}`;
     }
     return receipt;
 }
+
 module.exports ={
     removeRredundantElements,
     isBarcodeValid,
